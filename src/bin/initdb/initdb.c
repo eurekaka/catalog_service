@@ -174,6 +174,7 @@ static void set_null_conf(void);
 static void test_config_settings(void);
 static void setup_config(void);
 static void bootstrap_template1(char *short_version);
+static void bootstrap_database();
 static void setup_auth(void);
 static void get_set_pwd(void);
 static void setup_depend(void);
@@ -1386,6 +1387,42 @@ bootstrap_template1(char *short_version)
 	PG_CMD_CLOSE;
 
 	free(bki_lines);
+
+	check_ok();
+}
+
+static void
+bootstrap_database()
+{
+	PG_CMD_DECL;
+
+	printf(_("bootstraping database ... "), pg_data);
+	fflush(stdout);
+
+	/*
+	 * Pass correct LC_xxx environment to bootstrap.
+	 *
+	 * The shell script arranged to restore the LC settings afterwards, but
+	 * there doesn't seem to be any compelling reason to do that.
+	 */
+	snprintf(cmd, sizeof(cmd), "LC_COLLATE=%s", lc_collate);
+	putenv(xstrdup(cmd));
+
+	snprintf(cmd, sizeof(cmd), "LC_CTYPE=%s", lc_ctype);
+	putenv(xstrdup(cmd));
+
+	unsetenv("LC_ALL");
+
+	/* Also ensure backend isn't confused by this environment var: */
+	unsetenv("PGCLIENTENCODING");
+
+	snprintf(cmd, sizeof(cmd),
+			 "\"%s\" --boot -x1 %s",
+			 backend_exec, boot_options);
+
+	PG_CMD_OPEN;
+
+	PG_CMD_CLOSE;
 
 	check_ok();
 }
@@ -3118,41 +3155,41 @@ main(int argc, char *argv[])
 	setup_config();
 
 	/* Bootstrap template1 */
-	bootstrap_template1(short_version);
+	bootstrap_database();
 
-	/*
-	 * Make the per-database PG_VERSION for template1 only after init'ing it
-	 */
-	set_short_version(short_version, "base/1");
+	// /*
+	//  * Make the per-database PG_VERSION for template1 only after init'ing it
+	//  */
+	// set_short_version(short_version, "base/1");
 
-	/* Create the stuff we don't need to use bootstrap mode for */
+	// /* Create the stuff we don't need to use bootstrap mode for */
 
-	setup_auth();
-	if (pwprompt || pwfilename)
-		get_set_pwd();
+	// setup_auth();
+	// if (pwprompt || pwfilename)
+	// 	get_set_pwd();
 
-	setup_depend();
+	// setup_depend();
 
-	setup_sysviews();
+	// setup_sysviews();
 
-	setup_description();
+	// setup_description();
 
-	setup_conversion();
+	// setup_conversion();
 
-	setup_dictionary();
+	// setup_dictionary();
 
-	setup_privileges();
+	// setup_privileges();
 
-	setup_schema();
+	// setup_schema();
 
-	vacuum_db();
+	// vacuum_db();
 
-	make_template0();
+	// make_template0();
 
-	make_postgres();
+	// make_postgres();
 
-	if (authwarning != NULL)
-		fprintf(stderr, "%s", authwarning);
+	// if (authwarning != NULL)
+	//	fprintf(stderr, "%s", authwarning);
 
 	/* Get directory specification used to start this executable */
 	strcpy(bin_dir, argv[0]);
