@@ -66,7 +66,10 @@ SHLIB_LINK += -lshfolder -lwsock32 -lws2_32 -lsecur32 $(filter -leay32 -lssleay3
 endif
 
 
-all: def-files $(srcdir)/libpq.rc all-lib
+all: def-files $(srcdir)/libpq.rc all-lib SUBSYS.o
+
+SUBSYS.o: $(OBJS)
+	$(LD) $(LDREL) $(LDOUT) SUBSYS.o $(OBJS)
 
 # Shared library stuff
 include $(top_srcdir)/src/Makefile.shlib
@@ -172,6 +175,7 @@ clean distclean: clean-lib
 	rm -f $(OBJS) pg_config_paths.h crypt.c getaddrinfo.c inet_aton.c noblock.c open.c pgstrcasecmp.c snprintf.c strerror.c strlcpy.c thread.c md5.c ip.c encnames.c wchar.c win32error.c pgsleep.c pthread.h exports.list
 # Might be left over from a Win32 client-only build
 	rm -f pg_config_paths.h
+	rm -f SUBSYS.o
 
 maintainer-clean: distclean
 	rm -f $(srcdir)/libpqdll.def $(srcdir)/libpqddll.def $(srcdir)/blibpqdll.def $(srcdir)/libpq.rc
