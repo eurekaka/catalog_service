@@ -973,4 +973,7 @@ extern Datum pg_prepared_statement(PG_FUNCTION_ARGS);
 /* utils/mmgr/portalmem.c */
 extern Datum pg_cursor(PG_FUNCTION_ARGS);
 
+/* catalog service related */
+extern Datum UDF_CS_FindMyDatabase(PG_FUNCTION_ARGS);
+
 #endif   /* BUILTINS_H */

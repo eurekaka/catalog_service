@@ -4415,6 +4415,9 @@ DESCR("get set of in-progress txids in snapshot");
 DATA(insert OID = 2948 (  txid_visible_in_snapshot	PGNSP PGUID 12 1  0 f f t f i 2 16 "20 2970" _null_ _null_ _null_ txid_visible_in_snapshot - _null_ _null_ ));
 DESCR("is txid visible in snapshot?");
 
+/* catalog_service related */
+DATA(insert OID = 3775 ( UDF_CS_FindMyDatabase	PGNSP PGUID 12 1 0 f f t f i 1 2249 "2275" _null_ _null_ _null_ UDF_CS_FindMyDatabase - _null_ _null_ ));
+DESCR("find my database for catalog service");
 
 /*
  * Symbolic values for provolatile column: these indicate whether the result
