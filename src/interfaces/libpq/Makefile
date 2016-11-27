@@ -68,8 +68,9 @@ endif
 
 all: def-files $(srcdir)/libpq.rc all-lib SUBSYS.o
 
-SUBSYS.o: $(OBJS)
-	$(LD) $(LDREL) $(LDOUT) SUBSYS.o $(OBJS)
+BACKEND_LIBPQ_OBJS = fe-connect.o fe-exec.o pqexpbuffer.o fe-secure.o fe-misc.o fe-protocol3.o fe-protocol2.o fe-auth.o
+SUBSYS.o: $(BACKEND_LIBPQ_OBJS)
+	$(LD) $(LDREL) $(LDOUT) SUBSYS.o $(BACKEND_LIBPQ_OBJS)
 
 # Shared library stuff
 include $(top_srcdir)/src/Makefile.shlib
