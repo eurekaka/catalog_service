@@ -25,6 +25,7 @@
 #include "catalog/pg_authid.h"
 #include "catalog/pg_database.h"
 #include "catalog/pg_tablespace.h"
+#include "catalog/catalog_service_client.h"
 #include "libpq/hba.h"
 #include "mb/pg_wchar.h"
 #include "miscadmin.h"
@@ -76,33 +77,9 @@ static bool ThereIsAtLeastOneRole(void);
 static bool
 FindMyDatabase(const char *name, Oid *db_id, Oid *db_tablespace)
 {
-	bool		result = false;
-	char	   *filename;
-	FILE	   *db_file;
-	char		thisname[NAMEDATALEN];
-	TransactionId db_frozenxid;
-
-	filename = database_getflatfilename();
-	db_file = AllocateFile(filename, "r");
-	if (db_file == NULL)
-		ereport(FATAL,
-				(errcode_for_file_access(),
-				 errmsg("could not open file \"%s\": %m", filename)));
-
-	while (read_pg_database_line(db_file, thisname, db_id,
-								 db_tablespace, &db_frozenxid))
-	{
-		if (strcmp(thisname, name) == 0)
-		{
-			result = true;
-			break;
-		}
-	}
-
-	FreeFile(db_file);
-	pfree(filename);
-
-	return result;
+	if (FindMyDatabase_cs_cli(name, db_id, db_tablespace))
+		return true;
+	return false;
 }
 
 /*
