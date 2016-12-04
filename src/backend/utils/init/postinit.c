@@ -39,6 +39,7 @@
 #include "storage/procarray.h"
 #include "storage/sinval.h"
 #include "storage/smgr.h"
+#include "storage/s3api.h"
 #include "utils/acl.h"
 #include "utils/flatfiles.h"
 #include "utils/guc.h"
@@ -491,23 +492,16 @@ InitPostgres(const char *in_dbname, Oid dboid, const char *username,
 	 */
 	if (!bootstrap)
 	{
-		if (access(fullpath, F_OK) == -1)
+		if (S3apiAccess(fullpath, 3) == -1)
 		{
-			if (errno == ENOENT)
-				ereport(FATAL,
-						(errcode(ERRCODE_UNDEFINED_DATABASE),
-						 errmsg("database \"%s\" does not exist",
-								dbname),
-					errdetail("The database subdirectory \"%s\" is missing.",
-							  fullpath)));
-			else
-				ereport(FATAL,
-						(errcode_for_file_access(),
-						 errmsg("could not access directory \"%s\": %m",
-								fullpath)));
+			ereport(FATAL,
+					(errcode_for_file_access(),
+					 errmsg("could not access directory \"%s\": %m",
+					 fullpath)));
 		}
 
-		ValidatePgVersion(fullpath);
+		//FIXME: check the PG_VERSION on dfs
+		//ValidatePgVersion(fullpath);
 	}
 
 	/*
