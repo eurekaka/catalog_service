@@ -3509,8 +3509,8 @@ load_relcache_init_file(void)
 				magic;
 	int			i;
 
-	snprintf(initfilename, sizeof(initfilename), "%s/%s",
-			 DatabasePath, RELCACHE_INIT_FILENAME);
+	snprintf(initfilename, sizeof(initfilename), "global/%s",
+			 RELCACHE_INIT_FILENAME);
 
 	fp = AllocateFile(initfilename, PG_BINARY_R);
 	if (fp == NULL)
@@ -3847,10 +3847,10 @@ write_relcache_init_file(void)
 	 * another backend starting at about the same time might crash trying to
 	 * read the partially-complete file.
 	 */
-	snprintf(tempfilename, sizeof(tempfilename), "%s/%s.%d",
-			 DatabasePath, RELCACHE_INIT_FILENAME, MyProcPid);
-	snprintf(finalfilename, sizeof(finalfilename), "%s/%s",
-			 DatabasePath, RELCACHE_INIT_FILENAME);
+	snprintf(tempfilename, sizeof(tempfilename), "global/%s.%d",
+			 RELCACHE_INIT_FILENAME, MyProcPid);
+	snprintf(finalfilename, sizeof(finalfilename), "global/%s",
+			 RELCACHE_INIT_FILENAME);
 
 	unlink(tempfilename);		/* in case it exists w/wrong permissions */
 
