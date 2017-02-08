@@ -80,3 +80,9 @@
 
 ### Recursion
 -------------
+* 8.3 Write a method that returns all subsets of a set
+	* Best approach: We should first have some reasonable expectations of our time and space complexity How many subsets of a set are there? We can compute this by realizing that when we generate a subset, each element has the “choice” of either being in there or not That is, for the first element, there are 2 choices Forthesecond,therearetwo,etc So,doing2*2*...*2 n times gives us 2^n subsets We will not be able to do better than this in time or space complexity; so the solution is to use recursion: given a set S, we can do the following recursively: (1) Let first = S[0] Let smallerSet = S[1, , n]; (2) Compute all subsets of smallerSet and put them in allsubsets; (3) For each subset in allsubsets, clone it and add first to the subset;
+* 8.4 Write a method to compute all permutations of a string
+	* To permute set S, we can select the first character, A1, permute the remainder of the string to get a new list Then, with that new list, we can “push” A1 into each possible position; complexity is o(n!); NOTE THAT, this is true only if string does not contain duplicate characters;
+* 8.5 Implement an algorithm to print all valid (e.g, properly opened and closed) combinations of n-pairs of parentheses
+	* Best approach: treat it as a string, each position must have a left or right paren; When can we use left, and when can we use a right paren? (1) Left: As long as we haven’t used up all the left parentheses, we can always insert a left paren; (2)Right: We can insert a right paren as long as it won’t lead to a syntax error When will we get a syntax error? We will get a syntax error if there are more right parentheses than left
