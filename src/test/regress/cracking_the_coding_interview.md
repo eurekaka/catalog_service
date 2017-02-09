@@ -85,4 +85,12 @@
 * 8.4 Write a method to compute all permutations of a string
 	* To permute set S, we can select the first character, A1, permute the remainder of the string to get a new list Then, with that new list, we can “push” A1 into each possible position; complexity is o(n!); NOTE THAT, this is true only if string does not contain duplicate characters;
 * 8.5 Implement an algorithm to print all valid (e.g, properly opened and closed) combinations of n-pairs of parentheses
-	* Best approach: treat it as a string, each position must have a left or right paren; When can we use left, and when can we use a right paren? (1) Left: As long as we haven’t used up all the left parentheses, we can always insert a left paren; (2)Right: We can insert a right paren as long as it won’t lead to a syntax error When will we get a syntax error? We will get a syntax error if there are more right parentheses than left
+	* Best approach: treat it as a string, each position must have a left or right paren; When can we use left, and when can we use a right paren? (1) Left: As long as we haven’t used up all the left parentheses, we can always insert a left paren; (2)Right: We can insert a right paren as long as it won’t lead to a syntax error When will we get a syntax error? We will get a syntax error if there are more right parentheses than left
+* 8.7 Given an infinite number of quarters (25 cents), dimes (10 cents), nickels (5 cents) and pennies (1 cent), write code to calculate the number of ways of representing n cents
+	* Best approach: start from simple, if we can only use 1 cent, write code of divide_1_cent(n); then if we can use 5 cents, divide_5_cents(n) can be computed by using 0 5_cents, using 1 5_cents, etc; then divide_10_cents(n), then divide_25_cents(n);
+* 8.8 Write an algorithm to print all ways of arranging eight queens on a chess board so that none of them share the same row, column or diagonal
+	* key is understanding "diagonal"
+
+### Sorting and searching
+-------------------------
+
