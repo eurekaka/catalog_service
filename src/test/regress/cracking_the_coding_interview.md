@@ -93,4 +93,45 @@
 
 ### Sorting and searching
 -------------------------
-
+* several common sorting methods
+	* bubble sort
+	* merge sort
+	* quick sort
+	* bucket sort
+* 9.3 Given a sorted array of n integers that has been rotated an unknown number of times, give an O(log n) algorithm that finds an element in the array. You may assume that the array was originally sorted in increasing order.
+	* modification of binary search;
+	* What about duplicates? You may observe that the above function doesn’t give you an efficient result in case of duplicate elements. However, if your array has duplicate entries then we can’t do better than O(n) which is as good as linear search. For example, if the array is [2,2,2,2,2,2,2,2,3,2,2,2,2,2,2,2,2,2,2], there is no way to find element 3 until you do a linear search.
+* 9.6 Given a matrix in which each row and each column is sorted, write a method to find an element in it.
+	* Naive approach: o(N * M), not utilizing the sorting information;
+	* Best approach: recursion; assump that rows are sorted left to right in ascending order, and columns are sorted top to bottom in ascending order, so for each element `elem` in matrix, if `elem < x`, all the elements in the upper left corner are eliminated; if `elem > x`, then all the elements in the down right corner are eliminated; so if we start from upper right corner of the matrix, if `elem < x`, then the first line of the matrix is removed, and the issue is turned into a smaller recursive problem; if the `elem > x`, then the last column is removed from the matrix, and again, it turns into a smaller recursive problem; the complexity is o(n + m) in the worst case;
+* 9.7 A circus is designing a tower routine consisting of people standing atop one another’s shoulders. For practical and aesthetic reasons, each person must be both shorter and lighter than the person below him or her. Given the heights and weights of each person in the circus, write a method to compute the largest possible number of people in such a tower
+	* My approach(answer seems to be incorrect): first, sort the whole set; second, find the reverse pairs(in sequence); third, start from number L(size of whole circus), check if the sequence works; if not, decreate to L-1, that is to say, remove one element in the first pair, check if it works, and so on; wrap the remove procedure into a recursive method, the input is the reverse pairs, and the number of elements we can remove, the output is whether we can resolve all reverse pairs given the elements to remove;
+
+### System design and memory
+----------------------------
+* 12.3 Given an input file with four billion integers, provide an algorithm to generate an integer which is not contained in the file. Assume you have 1 GB of memory. What if you have only 10 MB of memory?
+	* bit map for 1GB memory; for 10MB, divide into blocks and count;
+
+### Low level
+-------------
+* 16.10 Write a function called my2DAlloc which allocates a two dimensional array. Minimize the number of calls to malloc and make sure that the memory is accessible by the notation arr[i][j].
+	* the core idea is to combine the malloc of each row to a single one;
+
+### Network
+-----------
+* 17.5 What are the differences between TCP and UDP? Explain how TCP handles reliable delivery (explain ACK mechanism), flow control (explain TCP sender’s / receiver’s window) and congestion control.
+	* Question: ssthresh would be too small in the long run? only congestion avoidance is working?
+
+### Lock and threads
+--------------------
+* 18.1 differences between processes and threads
+	* process has stack memory, each thread still has its own registers and its own stack, but these threads can read and write the process stack memory.
+* 18.2 How can you measure the time spent in a context switch?
+	* Tricky question, no answer;
+	* if we can modify kernel code, it's easy, adding some debugging code in scheduler code;
+	* if we must do it in user space, serveral challenges:
+		* basic approach is to record the timestamp of the last instruction of scheduled out process, and the timestamp of the first instruction of scheduled in process;
+		* how to get the timestamp? we have to use system call, which is expensive compared with the time we are going to measure;
+		* when we should get the timestamp? how do we know which instructions are on the border?
+		* where to record these timestamps? memory? no, too expensive, we have to record it in registers;
+		* there are so many tasks running in the system, we cannot guarantee OS would schedule in the process we wish;
