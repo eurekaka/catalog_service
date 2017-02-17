@@ -135,3 +135,15 @@
 		* when we should get the timestamp? how do we know which instructions are on the border?
 		* where to record these timestamps? memory? no, too expensive, we have to record it in registers;
 		* there are so many tasks running in the system, we cannot guarantee OS would schedule in the process we wish;
+* 18.3 Singleton class constructor?
+	* `static` would be best, and `synchronized` method would be expensive;
+	* double-checked locking:
+		* not working in JAVA;
+		* be careful in C, use `barrier` to prevent reordering;
+
+## Questions of OS
+==================
+* padding and size of structures
+	* First, for this kind of question, the answer depends on platforms and compilers(and `#pragma pack` pre-compiling instruction would affect this as well), the best answer is to write a code to test it; while there are some basic conventions we should keep in mind;
+	* The C compiler will add padding for alignment requirements, it may align fields in your structure for easier accessing; Further, it may pad the bottom of the structure;
+	* reasons for padding: performance (e.g, read start from even address), and correctness for atomicity and concurrency;
