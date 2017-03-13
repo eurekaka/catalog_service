@@ -68,6 +68,8 @@
 	* Normal approach: o(n*m)
 * 4.8 You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which sum up to that value. Note that it can be any path in the tree - it does not have to start at the root
 	* Recursive method; **WARNING**: the value can be less than 0, so we cannot terminate the diving even if we find the sum, we have to dive into the bottom of the tree for each root node;
+* balance a binary search tree?
+	* solution: first, get a sorted list from the BST by in-order traverse of the tree; then pick the middle item as the new root and build balanced binary search tree recursively.
 
 ### Bit Manipunation
 --------------------
